@@ -1,0 +1,10 @@
+[project]
+name = "lelamp-runtime"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "feetech-servo-sdk>=1.0.0",
+    "lerobot>=0.3.3",
+]
