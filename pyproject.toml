@@ -9,7 +9,6 @@ dependencies = [
     "feetech-servo-sdk>=1.0.0",
     "lerobot>=0.3.3",
     "numpy>=2.2.6",
-    "python3-rpi-gpio",
     "rpi-ws281x",
     "sounddevice>=0.5.2",
 ]
