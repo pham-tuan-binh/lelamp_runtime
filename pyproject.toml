@@ -5,10 +5,17 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "adafruit-circuitpython-neopixel",
     "feetech-servo-sdk>=1.0.0",
     "lerobot>=0.3.3",
+    "livekit-agents[openai]~=1.2",
+    "livekit-plugins-noise-cancellation~=0.2",
     "numpy>=2.2.6",
-    "rpi-ws281x",
+    "python-dotenv",
     "sounddevice>=0.5.2",
+]
+
+[project.optional-dependencies]
+hardware = [
+    "adafruit-circuitpython-neopixel",
+    "rpi-ws281x",
 ]
