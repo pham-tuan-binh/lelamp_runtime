@@ -1,4 +1,4 @@
-from ..follower.lelamp_follower import LeLampFollower, LeLampFollowerConfig
+from .follower.lelamp_follower import LeLampFollower, LeLampFollowerConfig
 import argparse
 
 def main():

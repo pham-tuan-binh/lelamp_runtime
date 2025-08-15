@@ -13,7 +13,7 @@ def main():
     )
 
     robot = LeLampFollower(robot_config)
-    robot.connect(calibrate=False)
+    robot.connect(calibrate=True)
 
     while True:
         try:
