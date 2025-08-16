@@ -21,7 +21,7 @@ def main():
     leader.connect(calibrate=True)
 
     # Set up CSV file for recording
-    csv_filename = f"{args.name or 'recording'}_{args.id}_{int(time.time())}.csv"
+    csv_filename = f"{args.name or 'recording'}_{args.id}.csv"
     with open(csv_filename, 'w', newline='') as csvfile:
         csv_writer = None
         
