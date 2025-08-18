@@ -10,6 +10,7 @@ dependencies = [
     "livekit-agents[openai]~=1.2",
     "livekit-plugins-noise-cancellation~=0.2",
     "numpy>=2.2.6",
+    "pyarrow==20.0.0",
     "python-dotenv",
     "sounddevice>=0.5.2",
 ]
