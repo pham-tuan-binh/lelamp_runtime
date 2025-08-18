@@ -1024,7 +1024,7 @@ hardware = [
 requires-dist = [
     { name = "adafruit-circuitpython-neopixel", marker = "extra == 'hardware'" },
     { name = "feetech-servo-sdk", specifier = ">=1.0.0" },
-    { name = "lerobot", specifier = ">=0.3.3" },
+    { name = "lerobot", git = "https://github.com/huggingface/lerobot" },
     { name = "livekit-agents", extras = ["openai"], specifier = "~=1.2" },
     { name = "livekit-plugins-noise-cancellation", specifier = "~=0.2" },
     { name = "numpy", specifier = ">=2.2.6" },
@@ -1036,8 +1036,8 @@ provides-extras = ["hardware"]
 
 [[package]]
 name = "lerobot"
-version = "0.3.3"
-source = { registry = "https://pypi.org/simple" }
+version = "0.3.4"
+source = { git = "https://github.com/huggingface/lerobot#55198de096f46a8e0447a8795129dd9ee84c088c" }
 dependencies = [
     { name = "av" },
     { name = "cmake" },
@@ -1061,10 +1061,6 @@ dependencies = [
     { name = "torchcodec", marker = "(platform_machine != 'aarch64' and platform_machine != 'arm64' and platform_machine != 'armv7l' and sys_platform == 'linux') or (platform_machine != 'x86_64' and sys_platform == 'darwin') or (sys_platform != 'darwin' and sys_platform != 'linux' and sys_platform != 'win32')" },
     { name = "torchvision" },
     { name = "wandb" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/c7/01/45eb19324a80c8719e7bd98fc12c5dfb50da2b58c2404953f6d0112a6fc3/lerobot-0.3.3.tar.gz", hash = "sha256:5a8c526f4f50a5a4260b75f0382af26d01ef169c9a1ae8ca453ad5c6e1cf5aef", size = 450703, upload-time = "2025-08-06T18:41:35.689Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/8e/be/3361a6417799062bbf7b7f6863900e3c1843eb7b21a5ffc5831fdfc7a3b3/lerobot-0.3.3-py3-none-any.whl", hash = "sha256:ae8354b516f5c8cfaa059d5ac926b4d03e96ca73350b971f8c7d75b905ba953d", size = 597692, upload-time = "2025-08-06T18:41:33.608Z" },
 ]
 
 [[package]]

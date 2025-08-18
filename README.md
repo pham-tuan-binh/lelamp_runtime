@@ -69,6 +69,12 @@ uv sync --extra hardware
 
 **Note**: For motor setup and control, LeLamp Runtime can run on your computer and you only need to run `uv sync`. For other functionality that connects to the head Pi (LED control, audio, camera), you need to install LeLamp Runtime on that Pi and run `uv sync --extra hardware`.
 
+If you have LFS problems, run the following command:
+
+```bash
+GIT_LFS_SKIP_SMUDGE=1 uv sync
+```
+
 ### Dependencies
 
 The runtime includes several key dependencies:
