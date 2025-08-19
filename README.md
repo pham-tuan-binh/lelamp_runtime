@@ -75,6 +75,12 @@ If you have LFS problems, run the following command:
 GIT_LFS_SKIP_SMUDGE=1 uv sync
 ```
 
+If your installation process is slow, use the following environment variable:
+
+```bash
+export UV_CONCURRENT_DOWNLOADS=1
+```
+
 ### Dependencies
 
 The runtime includes several key dependencies:
