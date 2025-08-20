@@ -3,7 +3,7 @@ import csv
 import time
 from typing import Any, List
 from ..base import ServiceBase
-from ...follower import LeLampFollowerConfig, LeLampFollower
+from lelamp.follower import LeLampFollowerConfig, LeLampFollower
 from lerobot.utils.robot_utils import busy_wait
 
 
