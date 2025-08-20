@@ -11,6 +11,7 @@ dependencies = [
     "livekit-plugins-noise-cancellation~=0.2",
     "numpy>=2.2.6",
     "pyarrow==20.0.0",
+    "pyaudio>=0.2.14",
     "python-dotenv",
     "sounddevice>=0.5.2",
 ]

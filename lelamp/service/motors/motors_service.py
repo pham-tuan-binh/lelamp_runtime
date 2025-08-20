@@ -4,7 +4,6 @@ import time
 from typing import Any, List
 from ..base import ServiceBase
 from lelamp.follower import LeLampFollowerConfig, LeLampFollower
-from lerobot.utils.robot_utils import busy_wait
 
 
 class MotorsService(ServiceBase):
@@ -20,9 +19,9 @@ class MotorsService(ServiceBase):
     def start(self):
         super().start()
         self.robot = LeLampFollower(self.robot_config)
-        self.robot.connect(calibrate=True)
+        self.robot.connect(calibrate=False)
         self.logger.info(f"Motors service connected to {self.port}")
-        
+
     def stop(self, timeout: float = 5.0):
         if self.robot:
             self.robot.disconnect()
@@ -62,7 +61,10 @@ class MotorsService(ServiceBase):
                 action = {key: float(value) for key, value in row.items() if key != 'timestamp'}
                 self.robot.send_action(action)
                 
-                busy_wait(1.0 / self.fps - (time.perf_counter() - t0))
+                # Use time.sleep instead of busy_wait to avoid blocking other threads
+                sleep_time = 1.0 / self.fps - (time.perf_counter() - t0)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
             
             self.logger.info(f"Finished playing recording: {recording_name}")
             
