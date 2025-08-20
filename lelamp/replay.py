@@ -1,13 +1,14 @@
 import argparse
 import csv
 import time
+import os
 
 from .follower import LeLampFollowerConfig, LeLampFollower
 from lerobot.utils.robot_utils import busy_wait
 
 def main():
     parser = argparse.ArgumentParser(description="Replay recorded actions from CSV file")
-    parser.add_argument('--csv', type=str, required=True, help='Path to CSV file containing recorded data')
+    parser.add_argument('--name', type=str, required=True, help='Name of the recording to replay')
     parser.add_argument('--port', type=str, required=True, help='Serial port for the robot')
     parser.add_argument('--id', type=str, required=True, help='ID of the robot')
     parser.add_argument('--fps', type=int, default=30, help='Frames per second for replay (default: 30)')
@@ -17,12 +18,17 @@ def main():
     robot = LeLampFollower(robot_config)
     robot.connect(calibrate=True)
 
+    # Build CSV filename from name and lamp ID
+    recordings_dir = os.path.join(os.path.dirname(__file__), "recordings")
+    csv_filename = f"{args.name}_{args.id}.csv"
+    csv_path = os.path.join(recordings_dir, csv_filename)
+
     # Read CSV file and replay actions
-    with open(args.csv, 'r') as csvfile:
+    with open(csv_path, 'r') as csvfile:
         csv_reader = csv.DictReader(csvfile)
         actions = list(csv_reader)
     
-    print(f"Replaying {len(actions)} actions from {args.csv}")
+    print(f"Replaying {len(actions)} actions from {csv_path}")
     
     for row in actions:
         t0 = time.perf_counter()

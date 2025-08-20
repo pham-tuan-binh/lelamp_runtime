@@ -1,6 +1,7 @@
 import argparse
 import time
 import csv
+import os
 from .leader import LeLampLeader, LeLampLeaderConfig
 from lerobot.utils.robot_utils import busy_wait
   
@@ -20,8 +21,12 @@ def main():
     leader = LeLampLeader(leader_config)
     leader.connect(calibrate=True)
 
+    # Create recordings directory if it doesn't exist
+    recordings_dir = os.path.join(os.path.dirname(__file__), "recordings")
+    os.makedirs(recordings_dir, exist_ok=True)
+
     # Set up CSV file for recording
-    csv_filename = f"{args.name or 'recording'}_{args.id}.csv"
+    csv_filename = os.path.join(recordings_dir, f"{args.name or 'recording'}_{args.id}.csv")
     with open(csv_filename, 'w', newline='') as csvfile:
         csv_writer = None
         

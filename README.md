@@ -166,7 +166,7 @@ This will:
 To replay a recorded movement:
 
 ```bash
-uv run -m lelamp.replay --id your_lamp_name --port the_port_found_in_previous_step --csv movement_sequence_name_lampid.csv
+uv run -m lelamp.replay --id your_lamp_name --port the_port_found_in_previous_step --name movement_sequence_name
 ```
 
 The replay system will:
