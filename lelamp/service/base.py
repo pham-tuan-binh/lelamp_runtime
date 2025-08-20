@@ -1,4 +1,5 @@
 import threading
+import time
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 from enum import IntEnum
@@ -105,3 +106,16 @@ class ServiceBase(ABC):
     def has_pending_event(self) -> bool:
         with self._event_lock:
             return self._current_event is not None
+    
+    def wait_until_idle(self, timeout: Optional[float] = None) -> bool:
+        """Wait until no pending events. Returns True if idle, False if timeout."""
+        start_time = None
+        if timeout is not None:
+            start_time = time.time()
+        
+        while self.has_pending_event:
+            if timeout is not None and time.time() - start_time > timeout:
+                return False
+            time.sleep(0.01)
+        
+        return True
