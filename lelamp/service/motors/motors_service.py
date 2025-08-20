@@ -22,7 +22,7 @@ class MotorsService(ServiceBase):
         self.robot = LeLampFollower(self.robot_config)
         self.robot.connect(calibrate=True)
         self.logger.info(f"Motors service connected to {self.port}")
-    
+        
     def stop(self, timeout: float = 5.0):
         if self.robot:
             self.robot.disconnect()

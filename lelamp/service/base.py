@@ -81,8 +81,6 @@ class ServiceBase(ABC):
                 with self._event_lock:
                     if self._current_event:
                         event = self._current_event
-                        self._current_event = None
-                        self._event_available.clear()
                     else:
                         continue
                 
@@ -90,6 +88,10 @@ class ServiceBase(ABC):
                     self.handle_event(event.event_type, event.payload)
                 except Exception as e:
                     self.logger.error(f"Error handling event {event.event_type}: {e}")
+                finally:
+                    with self._event_lock:
+                        self._current_event = None
+                        self._event_available.clear()
             
             if self._stop_event.is_set():
                 break
