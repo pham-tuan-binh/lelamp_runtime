@@ -230,6 +230,25 @@ uv run -m lelamp.app.voice.agent console
    - Run RGB tests with `sudo`
    - Check user permissions for hardware access
 
+4. **Sudo Sound Error**:
+
+Put the follwing into /etc/asound.conf:
+
+```bash
+# Default capture & playback device = Seeed 2-Mic
+pcm.!default {
+    type plug
+    slave {
+        pcm "hw:3,0"      # input/output device (Seeed 2-Mic)
+    }
+}
+
+ctl.!default {
+    type hw
+    card 3
+}
+```
+
 ## Contributing
 
 This is an open-source project by Human Computer Lab. Contributions are welcome through the GitHub repository.

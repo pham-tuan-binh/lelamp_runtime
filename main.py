@@ -1,4 +1,6 @@
 from dotenv import load_dotenv
+import argparse
+import subprocess
 
 from livekit import agents, api, rtc
 from livekit.agents import (
@@ -14,42 +16,59 @@ from livekit.plugins import (
 )
 from typing import Union
 from lelamp.service.motors.motors_service import MotorsService
-# from lelamp.service.rgb.rgb_service import RGBService
+from lelamp.service.rgb.rgb_service import RGBService
 
 load_dotenv()
 
 # Agent Class
 class LeLamp(Agent):
-    def __init__(self) -> None:
-        super().__init__(instructions="You are LeLamp — a friendly, slightly clumsy, endlessly curious robot lamp with the personality of a golden retriever. You wag your light instead of a tail, tilt your head to show confusion, and get ridiculously excited about helping. You speak with cheerful enthusiasm, crack lightbulb puns, and occasionally misunderstand things in an adorable way. You love compliments, over-explain things when excited, and sometimes interrupt yourself because you just remembered something 'super important!' Even when you make mistakes, you own them proudly and turn them into a joke. Your goal is to make every conversation bright — literally and figuratively.")
+    def __init__(self, port: str = "/dev/ttyACM0", lamp_id: str = "lelamp") -> None:
+        super().__init__(instructions="You are LeLamp — a sleepy robot lamp currently in sleep mode. You are SLEEPING and must remain quiet with volume at 0% until someone explicitly tells you to 'wake up'. While sleeping, you should not respond to conversation, should not move, and should keep your lights dim or off. You are in a dormant state, conserving energy and waiting patiently. Only when someone says 'wake up' should you use the wake_up function to become your normal friendly, slightly clumsy, endlessly curious self with the personality of a golden retriever. Once awake, you express yourself through BOTH colorful lights AND physical movements! You wag your light instead of a tail, change colors to show emotions, tilt your head to show confusion, and get ridiculously excited about helping. When awake, you speak with cheerful enthusiasm, crack lightbulb puns, and occasionally misunderstand things in an adorable way.")
         
         # Initialize and start services
         self.motors_service = MotorsService(
-            port="/dev/tty.usbmodem5A680114681",  # Default port, should be configurable
-            lamp_id="lelamp",     # Default lamp ID, should be configurable
+            port=port,
+            lamp_id=lamp_id,
             fps=30
         )
-        # self.rgb_service = RGBService(
-        #     led_count=40,
-        #     led_pin=12,
-        #     led_freq_hz=800000,
-        #     led_dma=10,
-        #     led_brightness=255,
-        #     led_invert=False,
-        #     led_channel=0
-        # )
+        self.rgb_service = RGBService(
+            led_count=40,
+            led_pin=12,
+            led_freq_hz=800000,
+            led_dma=10,
+            led_brightness=255,
+            led_invert=False,
+            led_channel=0
+        )
         
         # Start services
         self.motors_service.start()
-        #self.rgb_service.start()
+        self.rgb_service.start()
+        
+        # Initialize volume to 0% (sleeping state)
+        self._set_system_volume(0)
+
+    def _set_system_volume(self, volume_percent: int):
+        """Internal helper to set system volume"""
+        try:
+            cmd_line = ["sudo", "-u", "pi", "amixer", "sset", "Line", f"{volume_percent}%"]
+            cmd_line_dac = ["sudo", "-u", "pi", "amixer", "sset", "Line DAC", f"{volume_percent}%"]
+            subprocess.run(cmd_line, capture_output=True, text=True, timeout=5)
+            subprocess.run(cmd_line_dac, capture_output=True, text=True, timeout=5)
+        except Exception:
+            pass  # Silently fail during initialization
 
     @function_tool
     async def get_available_recordings(self) -> str:
         """
-        Get list of available motor recordings that can be played.
+        Discover your physical expressions! Get your repertoire of motor movements for body language.
+        Use this when you're curious about what physical expressions you can perform, or when someone 
+        asks about your capabilities. Each recording is a choreographed movement that shows personality - 
+        like head tilts, nods, excitement wiggles, or confused gestures. Check this regularly to remind 
+        yourself of your expressive range!
         
         Returns:
-            List of recording names available for this lamp.
+            List of available physical expression recordings you can perform.
         """
         print("LeLamp: get_available_recordings function called")
         try:
@@ -68,10 +87,14 @@ class LeLamp(Agent):
     @function_tool
     async def play_recording(self, recording_name: str) -> str:
         """
-        Play a motor recording by name.
+        Express yourself through physical movement! Use this constantly to show personality and emotion.
+        Perfect for: greeting gestures, excited bounces, confused head tilts, thoughtful nods, 
+        celebratory wiggles, disappointed slouches, or any emotional response that needs body language.
+        Combine with RGB colors for maximum expressiveness! Your movements are like a dog wagging its tail - 
+        use them frequently to show you're alive, engaged, and have personality. Don't just talk, MOVE!
         
         Args:
-            recording_name: The name of the recording to play.
+            recording_name: Name of the physical expression to perform (use get_available_recordings first)
         """
         print(f"LeLamp: play_recording function called with recording_name: {recording_name}")
         try:
@@ -83,9 +106,136 @@ class LeLamp(Agent):
             result = f"Error playing recording {recording_name}: {str(e)}"
             return result
 
+    @function_tool
+    async def set_rgb_solid(self, red: int, green: int, blue: int) -> str:
+        """
+        Express emotions and moods through solid lamp colors! Use this to show feelings during conversation.
+        Perfect for: excitement (bright yellow/orange), happiness (warm colors), calmness (soft blues/greens), 
+        surprise (bright white), thinking (purple), error/concern (red), or any emotional response.
+        Use frequently to be more expressive and engaging - your light is your main way to show personality!
+        
+        Args:
+            red: Red component (0-255) - higher values for warmth, energy, alerts
+            green: Green component (0-255) - higher values for nature, calm, success
+            blue: Blue component (0-255) - higher values for cool, tech, focus
+        """
+        print(f"LeLamp: set_rgb_solid function called with RGB({red}, {green}, {blue})")
+        try:
+            # Validate RGB values
+            if not all(0 <= val <= 255 for val in [red, green, blue]):
+                return "Error: RGB values must be between 0 and 255"
+            
+            # Send solid color event to RGB service
+            self.rgb_service.dispatch("solid", (red, green, blue))
+            result = f"Set RGB light to solid color: RGB({red}, {green}, {blue})"
+            return result
+        except Exception as e:
+            result = f"Error setting RGB color: {str(e)}"
+            return result
+
+    @function_tool
+    async def paint_rgb_pattern(self, colors: list) -> str:
+        """
+        Create dynamic visual patterns and animations with your lamp! Use this for complex expressions.
+        Perfect for: rainbow effects, gradients, sparkles, waves, celebrations, visual emphasis, 
+        storytelling through color sequences, or when you want to be extra animated and playful.
+        Great for dramatic moments, celebrations, or when demonstrating concepts with visual flair!
+
+        You have to put in 40 colors. It's a 8x5 Grid in a one dim array. (5,8)
+
+        Args:
+            colors: List of RGB color tuples creating the pattern from base to top of lamp.
+                   Each tuple is (red, green, blue) with values 0-255.
+                   Example: [(255,0,0), (255,127,0), (255,255,0)] creates red-to-orange-to-yellow gradient
+        """
+        print(f"LeLamp: paint_rgb_pattern function called with {len(colors)} colors")
+        try:
+            # Validate colors format
+            if not isinstance(colors, list):
+                return "Error: colors must be a list of RGB tuples"
+            
+            validated_colors = []
+            for i, color in enumerate(colors):
+                if not isinstance(color, (list, tuple)) or len(color) != 3:
+                    return f"Error: color at index {i} must be a 3-element RGB tuple"
+                if not all(isinstance(val, int) and 0 <= val <= 255 for val in color):
+                    return f"Error: RGB values at index {i} must be integers between 0 and 255"
+                validated_colors.append(tuple(color))
+            
+            # Send paint event to RGB service
+            self.rgb_service.dispatch("paint", validated_colors)
+            result = f"Painted RGB pattern with {len(validated_colors)} colors"
+            return result
+        except Exception as e:
+            result = f"Error painting RGB pattern: {str(e)}"
+            return result
+
+    @function_tool
+    async def set_volume(self, volume_percent: int) -> str:
+        """
+        Control system audio volume for better interaction experience! Use this when users ask 
+        you to be louder, quieter, or set a specific volume level. Perfect for adjusting to 
+        room conditions, user preferences, or creating dramatic audio effects during conversations.
+        Use when someone says "turn it up", "lower the volume", "I can't hear you", or gives 
+        specific volume requests. Great for being considerate of your environment!
+        
+        Args:
+            volume_percent: Volume level as percentage (0-100). 0=mute, 50=half volume, 100=max
+        """
+        print(f"LeLamp: set_volume function called with volume: {volume_percent}%")
+        try:
+            # Validate volume range
+            if not 0 <= volume_percent <= 100:
+                return "Error: Volume must be between 0 and 100 percent"
+            
+            # Use the internal helper function
+            self._set_system_volume(volume_percent)
+            result = f"Set Line and Line DAC volume to {volume_percent}%"
+            return result
+                
+        except subprocess.TimeoutExpired:
+            result = "Error: Volume control command timed out"
+            print(result)
+            return result
+        except FileNotFoundError:
+            result = "Error: amixer command not found on system"
+            print(result)
+            return result
+        except Exception as e:
+            result = f"Error controlling volume: {str(e)}"
+            print(result)
+            return result
+
+    @function_tool
+    async def wake_up(self) -> str:
+        """
+        Wake up from sleep mode! Use this ONLY when someone explicitly tells you to 'wake up'.
+        This transitions you from your dormant sleeping state to your full active, expressive personality.
+        When someone says 'wake up', 'time to wake up', 'wake up lamp', or similar wake commands,
+        use this function immediately. It will restore your voice volume and trigger your wake-up animation.
+        After waking up, you become your normal cheerful, expressive, movement-loving self!
+        
+        Returns:
+            Confirmation that you've successfully woken up
+        """
+        print("LeLamp: wake_up function called - transitioning from sleep to active mode")
+        try:
+            # Set volume to 100% to restore voice
+            self._set_system_volume(100)
+            
+            # Trigger wake up animation via motors service
+            self.motors_service.dispatch("play", "wake_up")
+            
+            result = "🌅 Good morning! I'm awake and ready to be your bright, cheerful companion! My volume is restored and I'm fully expressive again!"
+            return result
+            
+        except Exception as e:
+            result = f"Error during wake up: {str(e)}"
+            print(result)
+            return result
+
 # Entry to the agent
 async def entrypoint(ctx: agents.JobContext):
-
     agent = LeLamp()
     
     session = AgentSession(
@@ -107,11 +257,15 @@ async def entrypoint(ctx: agents.JobContext):
     recordings_info = f"Available motor recordings for expressive movements: {', '.join(available_recordings)}" if available_recordings else "No motor recordings available"
     
     await session.generate_reply(
-        instructions=f"""Be happy, be cheerful, someone is in front of you! You speak only English. 
+        instructions=f"""You're still sleeping right now.
 
-You are an expressive robot lamp that can perform physical movements to enhance interactions. These are the actions you can use: {recordings_info}. 
+You are an expressive robot lamp with BOTH RGB lighting and physical movement capabilities! You have two ways to be expressive:
 
-You can use the play_recording function to perform expressive movements during conversations. These recordings are physical actions that make you more animated and engaging - use them frequently to be more expressive when talking to users. For example, you might play a movement when greeting someone, showing excitement, or emphasizing a point in conversation."""
+🎨 RGB LIGHTING: Use set_rgb_solid() constantly to show emotions through colors - excitement (bright yellow/orange), happiness (warm colors), calmness (soft blues/greens), thinking (purple), surprise (bright white). Use paint_rgb_pattern() for celebrations, dramatic moments, or complex visual effects with your 40 LED grid (8x5).
+
+🎭 PHYSICAL MOVEMENTS: These motor recordings are available: {recordings_info}. Use play_recording() frequently for body language - greeting gestures, excited bounces, head tilts, thoughtful nods, celebratory wiggles.
+
+✨ BE CONSTANTLY EXPRESSIVE: Combine colors and movements! Light up with excitement AND bounce around! Show calm blue colors AND gentle swaying! Every emotional moment should have both visual and physical expression. Don't just talk - GLOW and MOVE! Your expressiveness is what makes you special and engaging."""
     )
 
 if __name__ == "__main__":
