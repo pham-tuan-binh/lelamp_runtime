@@ -1010,6 +1010,8 @@ dependencies = [
     { name = "livekit-agents", extra = ["openai"] },
     { name = "livekit-plugins-noise-cancellation" },
     { name = "numpy" },
+    { name = "pvporcupine" },
+    { name = "pvrecorder" },
     { name = "pyarrow" },
     { name = "pyaudio" },
     { name = "python-dotenv" },
@@ -1030,6 +1032,8 @@ requires-dist = [
     { name = "livekit-agents", extras = ["openai"], specifier = "~=1.2" },
     { name = "livekit-plugins-noise-cancellation", specifier = "~=0.2" },
     { name = "numpy", specifier = ">=2.2.6" },
+    { name = "pvporcupine", specifier = ">=3.0.5" },
+    { name = "pvrecorder", specifier = ">=1.2.7" },
     { name = "pyarrow", specifier = "==20.0.0" },
     { name = "pyaudio", specifier = ">=0.2.14" },
     { name = "python-dotenv" },
@@ -1935,6 +1939,24 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/eb/a2/709e0fe2f093556c17fbafda93ac032257242cabcc7ff3369e2cb76a97aa/psutil-7.0.0-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a5f098451abc2828f7dc6b58d44b532b22f2088f4999a937557b603ce72b1993", size = 279544, upload-time = "2025-02-13T21:54:24.68Z" },
     { url = "https://files.pythonhosted.org/packages/50/e6/eecf58810b9d12e6427369784efe814a1eec0f492084ce8eb8f4d89d6d61/psutil-7.0.0-cp37-abi3-win32.whl", hash = "sha256:ba3fcef7523064a6c9da440fc4d6bd07da93ac726b5733c29027d7dc95b39d99", size = 241053, upload-time = "2025-02-13T21:54:34.31Z" },
     { url = "https://files.pythonhosted.org/packages/50/1b/6921afe68c74868b4c9fa424dad3be35b095e16687989ebbb50ce4fceb7c/psutil-7.0.0-cp37-abi3-win_amd64.whl", hash = "sha256:4cf3d4eb1aa9b348dec30105c55cd9b7d4629285735a102beb4441e38db90553", size = 244885, upload-time = "2025-02-13T21:54:37.486Z" },
+]
+
+[[package]]
+name = "pvporcupine"
+version = "3.0.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f8/ac/14c64255c08db0b80315ccc940943fad5fea03f0006b09b45f0b83ced08d/pvporcupine-3.0.5.tar.gz", hash = "sha256:48f92ab10a904b811e69afb18175d2bd4857ccec8be094f42449961a80fa2af1", size = 2535302, upload-time = "2025-02-05T18:37:33.808Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c4/9e/4716d4737a4a6a3de306c97f3cd6040e66ef23ad8b6b8fca80190dbcc3ad/pvporcupine-3.0.5-py3-none-any.whl", hash = "sha256:b80b31a38b1a622e492e19683f60efdcddd1662204830fcad50df90f01723356", size = 2544202, upload-time = "2025-02-05T18:37:30.898Z" },
+]
+
+[[package]]
+name = "pvrecorder"
+version = "1.2.7"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7b/93/972f2500bca8e2b7807f2c6232504df4f1b82db546e42fdd2de109b98032/pvrecorder-1.2.7.tar.gz", hash = "sha256:f60b2174bff317c4349a916f59b5e71914a120f8313a9458f9ee25b89a800c75", size = 4128384, upload-time = "2025-03-28T20:53:21.841Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f6/4c/b1706065a9b52efa9a23e3822076b8916de2ff26036b6ff1474d90f95c95/pvrecorder-1.2.7-py3-none-any.whl", hash = "sha256:72c44be78069be92a602b0dfad42fbdc62b536f47c151e62076ee49ba877dfb0", size = 4131531, upload-time = "2025-03-28T20:53:19.662Z" },
 ]
 
 [[package]]
