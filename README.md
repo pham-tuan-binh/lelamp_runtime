@@ -215,6 +215,19 @@ sudo systemctl enable lelamp.service
 sudo systemctl start lelamp.service
 ```
 
+For other service controls:
+
+```bash
+# Disable from starting on boot
+sudo systemctl disable lelamp.service
+
+# Stop the currently running service
+sudo systemctl stop lelamp.service
+
+# Check status (should show "disabled" and "inactive")
+sudo systemctl status lelamp.service
+```
+
 ## Sample Apps
 
 Sample apps to test LeLamp's capabilities.
