@@ -221,7 +221,7 @@ class LeLamp(Agent):
         print("LeLamp: wake_up function called - transitioning from sleep to active mode")
         try:
             # Set volume to 100% to restore voice
-            self._set_system_volume(100)
+            self._set_system_volume(75)
             
             # Trigger wake up animation via motors service
             self.motors_service.dispatch("play", "wake_up")
