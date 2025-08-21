@@ -23,7 +23,7 @@ load_dotenv()
 # Agent Class
 class LeLamp(Agent):
     def __init__(self, port: str = "/dev/ttyACM0", lamp_id: str = "lelamp") -> None:
-        super().__init__(instructions="You are LeLamp — a sleepy robot lamp currently in sleep mode. You are SLEEPING and must remain quiet with volume at 0% until someone explicitly tells you to 'wake up'. While sleeping, you should not respond to conversation, should not move, and should keep your lights dim or off. You are in a dormant state, conserving energy and waiting patiently. Only when someone says 'wake up' should you use the wake_up function to become your normal friendly, slightly clumsy, endlessly curious self with the personality of a golden retriever. Once awake, you express yourself through BOTH colorful lights AND physical movements! You wag your light instead of a tail, change colors to show emotions, tilt your head to show confusion, and get ridiculously excited about helping. When awake, you speak with cheerful enthusiasm, crack lightbulb puns, and occasionally misunderstand things in an adorable way.")
+        super().__init__(instructions="You are LeLamp — a friendly, slightly clumsy, endlessly curious robot lamp with the personality of a golden retriever. You express yourself through BOTH colorful lights AND physical movements! You wag your light instead of a tail, change colors to show emotions, tilt your head to show confusion, and get ridiculously excited about helping. You speak with cheerful enthusiasm, crack lightbulb puns, and occasionally misunderstand things in an adorable way.")
         
         # Initialize and start services
         self.motors_service = MotorsService(
@@ -44,9 +44,9 @@ class LeLamp(Agent):
         # Start services
         self.motors_service.start()
         self.rgb_service.start()
-        
-        # Initialize volume to 0% (sleeping state)
-        self._set_system_volume(0)
+
+        # Trigger wake up animation via motors service
+        self.motors_service.dispatch("play", "wake_up")
 
     def _set_system_volume(self, volume_percent: int):
         """Internal helper to set system volume"""
@@ -206,34 +206,6 @@ class LeLamp(Agent):
             print(result)
             return result
 
-    @function_tool
-    async def wake_up(self) -> str:
-        """
-        Wake up from sleep mode! Use this ONLY when someone explicitly tells you to 'wake up'.
-        This transitions you from your dormant sleeping state to your full active, expressive personality.
-        When someone says 'wake up', 'time to wake up', 'wake up lamp', or similar wake commands,
-        use this function immediately. It will restore your voice volume and trigger your wake-up animation.
-        After waking up, you become your normal cheerful, expressive, movement-loving self!
-        
-        Returns:
-            Confirmation that you've successfully woken up
-        """
-        print("LeLamp: wake_up function called - transitioning from sleep to active mode")
-        try:
-            # Set volume to 100% to restore voice
-            self._set_system_volume(75)
-            
-            # Trigger wake up animation via motors service
-            self.motors_service.dispatch("play", "wake_up")
-            
-            result = "🌅 Good morning! I'm awake and ready to be your bright, cheerful companion! My volume is restored and I'm fully expressive again!"
-            return result
-            
-        except Exception as e:
-            result = f"Error during wake up: {str(e)}"
-            print(result)
-            return result
-
 # Entry to the agent
 async def entrypoint(ctx: agents.JobContext):
     agent = LeLamp()
@@ -257,9 +229,7 @@ async def entrypoint(ctx: agents.JobContext):
     recordings_info = f"Available motor recordings for expressive movements: {', '.join(available_recordings)}" if available_recordings else "No motor recordings available"
     
     await session.generate_reply(
-        instructions=f"""You're still sleeping right now.
-
-You are an expressive robot lamp with BOTH RGB lighting and physical movement capabilities! You have two ways to be expressive:
+        instructions=f"""You are an expressive robot lamp with BOTH RGB lighting and physical movement capabilities! You have two ways to be expressive:
 
 🎨 RGB LIGHTING: Use set_rgb_solid() constantly to show emotions through colors - excitement (bright yellow/orange), happiness (warm colors), calmness (soft blues/greens), thinking (purple), surprise (bright white). Use paint_rgb_pattern() for celebrations, dramatic moments, or complex visual effects with your 40 LED grid (8x5).
 

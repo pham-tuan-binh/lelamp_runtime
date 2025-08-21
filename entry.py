@@ -1,4 +1,3 @@
-import struct
 import subprocess
 from datetime import datetime
 
@@ -32,13 +31,22 @@ def main():
 
             if result >= 0:
                 print(f"[{datetime.now()}] Detected {KEYWORD}")
+                recorder.delete()
+                porcupine.delete()
                 print("Running: sudo uv run main.py console")
                 subprocess.run(["sudo", "uv", "run", "main.py", "console"])
+                break
     except KeyboardInterrupt:
         print("Stopping...")
     finally:
-        recorder.delete()
-        porcupine.delete()
+        try:
+            recorder.delete()
+        except:
+            pass
+        try:
+            porcupine.delete()
+        except:
+            pass
 
 
 if __name__ == "__main__":
