@@ -180,6 +180,41 @@ The replay system will:
 Recorded movements are saved as CSV files with the naming convention:
 `{sequence_name}_{lamp_id}.csv`
 
+## 4. Start upon boot
+
+To start LeLamp's voice app upon booting. Create a systemd service file:
+
+```bash
+sudo nano /etc/systemd/system/lelamp.service
+```
+
+Add this content:
+
+```bash
+ini[Unit]
+Description=Lelamp Runtime Service
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/lelamp_runtime
+ExecStart=/usr/bin/sudo uv run main.py console
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then enable and start the service:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable lelamp.service
+sudo systemctl start lelamp.service
+```
+
 ## Sample Apps
 
 Sample apps to test LeLamp's capabilities.
