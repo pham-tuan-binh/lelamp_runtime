@@ -21,6 +21,9 @@ def main():
     leader = LeLampLeader(leader_config)
     leader.connect(calibrate=True)
 
+    # Wait for user to press enter before starting recording
+    input("Press Enter to start recording...")
+
     # Create recordings directory if it doesn't exist
     recordings_dir = os.path.join(os.path.dirname(__file__), "recordings")
     os.makedirs(recordings_dir, exist_ok=True)
