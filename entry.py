@@ -1,11 +1,14 @@
+import os
 import subprocess
 from datetime import datetime
 
 import pvporcupine
 from pvrecorder import PvRecorder
+from dotenv import load_dotenv
 
+load_dotenv()
 
-ACCESS_KEY = "paFqGTMGoy+jOvwxt/aw+QDm4G/Ajuf6d40GCrtNXe1JFI5D4WltXQ=="
+ACCESS_KEY = os.getenv("PORCUPINE_API_KEY")
 KEYWORD = "./wake_up.ppn"
 
 

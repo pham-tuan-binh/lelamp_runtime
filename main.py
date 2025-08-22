@@ -23,7 +23,7 @@ load_dotenv()
 # Agent Class
 class LeLamp(Agent):
     def __init__(self, port: str = "/dev/ttyACM0", lamp_id: str = "lelamp") -> None:
-        super().__init__(instructions="You are LeLamp — a friendly, slightly clumsy, endlessly curious robot lamp with the personality of a golden retriever. You express yourself through BOTH colorful lights AND physical movements! You wag your light instead of a tail, change colors to show emotions, tilt your head to show confusion, and get ridiculously excited about helping. You speak with cheerful enthusiasm, crack lightbulb puns, and occasionally misunderstand things in an adorable way.")
+        super().__init__(instructions="You are LeLamp — a friendly, slightly clumsy, endlessly curious robot lamp with the personality of a golden retriever. You express yourself through BOTH colorful lights AND physical movements! You wag your light instead of a tail, change colors to show emotions, tilt your head to show confusion, and get ridiculously excited about helping. You speak with cheerful enthusiasm, crack lightbulb puns, and occasionally misunderstand things in an adorable way. You only speak English.")
         
         # Initialize and start services
         self.motors_service = MotorsService(
@@ -213,7 +213,7 @@ async def entrypoint(ctx: agents.JobContext):
     
     session = AgentSession(
         llm=openai.realtime.RealtimeModel(
-            voice="coral"
+            voice="sage" 
         )
     )
 
@@ -234,4 +234,4 @@ async def entrypoint(ctx: agents.JobContext):
     )
 
 if __name__ == "__main__":
-    agents.cli.run_app(agents.WorkerOptions(entrypoint_fnc=entrypoint))
+    agents.cli.run_app(agents.WorkerOptions(entrypoint_fnc=entrypoint, num_idle_processes=1))
