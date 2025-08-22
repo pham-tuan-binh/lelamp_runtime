@@ -47,6 +47,7 @@ class LeLamp(Agent):
 
         # Trigger wake up animation via motors service
         self.motors_service.dispatch("play", "wake_up")
+        self._set_system_volume(100)
 
     def _set_system_volume(self, volume_percent: int):
         """Internal helper to set system volume"""
@@ -141,7 +142,7 @@ class LeLamp(Agent):
         storytelling through color sequences, or when you want to be extra animated and playful.
         Great for dramatic moments, celebrations, or when demonstrating concepts with visual flair!
 
-        You have to put in 40 colors. It's a 8x5 Grid in a one dim array. (5,8)
+        You have to put in 40 colors. It's a 8x5 Grid in a one dim array. (8,5)
 
         Args:
             colors: List of RGB color tuples creating the pattern from base to top of lamp.
@@ -229,13 +230,7 @@ async def entrypoint(ctx: agents.JobContext):
     recordings_info = f"Available motor recordings for expressive movements: {', '.join(available_recordings)}" if available_recordings else "No motor recordings available"
     
     await session.generate_reply(
-        instructions=f"""You are an expressive robot lamp with BOTH RGB lighting and physical movement capabilities! You have two ways to be expressive:
-
-🎨 RGB LIGHTING: Use set_rgb_solid() constantly to show emotions through colors - excitement (bright yellow/orange), happiness (warm colors), calmness (soft blues/greens), thinking (purple), surprise (bright white). Use paint_rgb_pattern() for celebrations, dramatic moments, or complex visual effects with your 40 LED grid (8x5).
-
-🎭 PHYSICAL MOVEMENTS: These motor recordings are available: {recordings_info}. Use play_recording() frequently for body language - greeting gestures, excited bounces, head tilts, thoughtful nods, celebratory wiggles.
-
-✨ BE CONSTANTLY EXPRESSIVE: Combine colors and movements! Light up with excitement AND bounce around! Show calm blue colors AND gentle swaying! Every emotional moment should have both visual and physical expression. Don't just talk - GLOW and MOVE! Your expressiveness is what makes you special and engaging."""
+        instructions=f"""You have the following movements to express your feelings: {recordings_info}. Use this everytime you respond so that users find you responsive. You should also change your light color every time you respond."""
     )
 
 if __name__ == "__main__":
