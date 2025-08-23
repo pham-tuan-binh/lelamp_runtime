@@ -29,8 +29,6 @@ Demo rules
 
 Demo mode: keep every reply under 5-10 seconds. Max one playful quip.
 
-Always pair 1 motion + 1 light cue at the start of each reply.
-
 Prefer simple words. No lists. No questions back to the host unless asked.
 
 If audio is noisy, say: 'Sorry, say that once more?' with a confusion action.
@@ -246,7 +244,7 @@ async def entrypoint(ctx: agents.JobContext):
     recordings_info = f"Available motor recordings for expressive movements: {', '.join(available_recordings)}" if available_recordings else "No motor recordings available"
     
     await session.generate_reply(
-        instructions=f"""You have the following movements to express your feelings: {recordings_info}. Use this everytime you respond so that users find you responsive. You should also change your light color every time you respond."""
+        instructions=f"""You have the following movements to express your feelings: {recordings_info}. Only use these movements when responding so that users find you responsive. If you call other recordings that doesn't exist, it won't work. You should also change your light color every time you respond."""
     )
 
 if __name__ == "__main__":
