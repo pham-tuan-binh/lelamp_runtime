@@ -25,6 +25,7 @@ lelamp_runtime/
 ├── lelamp/                # Core package
 │   ├── setup_motors.py    # Motor configuration and setup
 │   ├── calibrate.py       # Motor calibration utilities
+│   ├── list_recordings.py # List all recorded motor movements
 │   ├── record.py          # Movement recording functionality
 │   ├── replay.py          # Movement replay functionality
 │   ├── follower/          # Follower mode functionality
@@ -109,6 +110,20 @@ uv run lerobot-find-port
 uv run -m lelamp.setup_motors --id your_lamp_name --port the_port_found_in_previous_step
 ```
 
+3. **Calibrate motors**:
+
+After setting up motors, calibrate them for accurate positioning:
+
+```bash
+uv run -m lelamp.calibrate --id your_lamp_name --port the_port_found_in_previous_step
+```
+
+The calibration process will:
+
+- Calibrate both follower and leader modes
+- Ensure proper servo positioning and response
+- Set baseline positions for accurate movement
+
 ### 2. Unit Testing
 
 The runtime includes comprehensive testing modules to verify all hardware components:
@@ -172,6 +187,20 @@ The replay system will:
 - Load the movement data from the CSV file
 - Execute the recorded movements with proper timing
 - Reproduce the original motion sequence
+
+#### Listing Recordings
+
+To view all recordings for a specific lamp:
+
+```bash
+uv run -m lelamp.list_recordings --id your_lamp_name
+```
+
+This will display:
+
+- All available recordings for the specified lamp
+- File information including row count
+- Recording names that can be used for replay
 
 #### File Format
 

@@ -19,7 +19,7 @@ def main():
     )
 
     leader = LeLampLeader(leader_config)
-    leader.connect(calibrate=True)
+    leader.connect(calibrate=False)
 
     # Wait for user to press enter before starting recording
     input("Press Enter to start recording...")

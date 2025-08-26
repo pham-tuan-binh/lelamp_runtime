@@ -16,7 +16,7 @@ def main():
 
     robot_config = LeLampFollowerConfig(port=args.port, id=args.id)
     robot = LeLampFollower(robot_config)
-    robot.connect(calibrate=True)
+    robot.connect(calibrate=False)
 
     # Build CSV filename from name and lamp ID
     recordings_dir = os.path.join(os.path.dirname(__file__), "recordings")
