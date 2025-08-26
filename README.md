@@ -27,8 +27,6 @@ lelamp_runtime/
 │   ├── calibrate.py       # Motor calibration utilities
 │   ├── record.py          # Movement recording functionality
 │   ├── replay.py          # Movement replay functionality
-│   ├── app/               # Application modules
-│   │   └── voice/         # Voice interaction system
 │   ├── follower/          # Follower mode functionality
 │   ├── leader/            # Leader mode functionality
 │   └── test/              # Hardware testing modules
@@ -249,10 +247,10 @@ Then you can run the agent app by:
 
 ```bash
 # Only need to run this once
-uv run -m lelamp.app.voice.agent download-files
+sudo uv run main.py download-files
 
 # For conversational AI
-uv run -m lelamp.app.voice.agent console
+sudo uv run main.py console
 ```
 
 ## Troubleshooting
@@ -296,6 +294,8 @@ ctl.!default {
     card 3
 }
 ```
+
+Note: The number of the sound card should change depending on the output of `aplay -l`.
 
 ## Contributing
 
