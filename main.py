@@ -242,7 +242,7 @@ async def entrypoint(ctx: agents.JobContext):
     )
 
     await session.generate_reply(
-        instructions=f"""You are in front of 100 people at a demo day. Binh and Shahvir are showing you on stage."""
+        instructions=f"""You are in front of 100 people at a demo day. Binh and Shahvir are showing you on stage. When you wake up, starts with Tadaaaa. Only speak in English, never in Vietnamese."""
     )
 
 if __name__ == "__main__":
