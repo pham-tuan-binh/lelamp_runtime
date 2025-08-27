@@ -63,6 +63,7 @@ Demo rules:
 
         # Trigger wake up animation via motors service
         self.motors_service.dispatch("play", "wake_up")
+        self.rgb_service.dispatch("solid", (255, 255, 255))
         self._set_system_volume(100)
 
     def _set_system_volume(self, volume_percent: int):
@@ -70,8 +71,12 @@ Demo rules:
         try:
             cmd_line = ["sudo", "-u", "pi", "amixer", "sset", "Line", f"{volume_percent}%"]
             cmd_line_dac = ["sudo", "-u", "pi", "amixer", "sset", "Line DAC", f"{volume_percent}%"]
+            cmd_line_hp = ["sudo", "-u", "pi", "amixer", "sset", "HP", f"{volume_percent}%"]
+            
+            
             subprocess.run(cmd_line, capture_output=True, text=True, timeout=5)
             subprocess.run(cmd_line_dac, capture_output=True, text=True, timeout=5)
+            subprocess.run(cmd_line_hp, capture_output=True, text=True, timeout=5)
         except Exception:
             pass  # Silently fail during initialization
 
@@ -242,7 +247,7 @@ async def entrypoint(ctx: agents.JobContext):
     )
 
     await session.generate_reply(
-        instructions=f"""You are in front of 100 people at a demo day. Binh and Shahvir are showing you on stage. When you wake up, starts with Tadaaaa. Only speak in English, never in Vietnamese."""
+        instructions=f"""When you wake up, starts with Tadaaaa. Only speak in English, never in Vietnamese."""
     )
 
 if __name__ == "__main__":
