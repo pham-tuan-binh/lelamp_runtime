@@ -12,8 +12,11 @@ from livekit.agents import (
 import logging
 from livekit.plugins import (
     openai,
+    groq,
     noise_cancellation,
+    silero,
 )
+from livekit.plugins.turn_detector.multilingual import MultilingualModel
 from typing import Union
 from lelamp.service.motors.animation_service import AnimationService
 from lelamp.service.rgb.rgb_service import RGBService
@@ -235,9 +238,19 @@ async def entrypoint(ctx: agents.JobContext):
     agent = LeLamp()
     
     session = AgentSession(
-        llm=openai.realtime.RealtimeModel(
-            voice="ballad" 
-        )
+        llm=groq.LLM(
+            model="openai/gpt-oss-120b"
+        ),
+        stt = openai.STT(
+            model="gpt-4o-transcribe",
+        ),
+        tts = openai.TTS(
+            model="gpt-4o-mini-tts",
+            voice="ballad",
+            instructions="Speak in a friendly and conversational tone.",
+        ),
+        vad=silero.VAD.load(),
+        turn_detection=MultilingualModel(),
     )
 
     await session.start(
