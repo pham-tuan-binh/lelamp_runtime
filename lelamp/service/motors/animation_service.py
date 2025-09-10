@@ -7,7 +7,7 @@ from lelamp.follower import LeLampFollowerConfig, LeLampFollower
 
 
 class AnimationService:
-    def __init__(self, port: str, lamp_id: str, fps: int = 30, duration: float = 5.0, idle_recording: str = "curious"):
+    def __init__(self, port: str, lamp_id: str, fps: int = 30, duration: float = 5.0, idle_recording: str = "idle"):
         self.port = port
         self.lamp_id = lamp_id
         self.fps = fps

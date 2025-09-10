@@ -14,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from service.motors.animation_service import AnimationService
 
 
-def test_animation_service(port, lamp_id, fps=30, duration=1.0, idle_recording="curious"):
+def test_animation_service(port, lamp_id, fps=30, duration=1.0, idle_recording="idle"):
     """Test the AnimationService functionality"""
     print("=== Testing AnimationService ===")
     
@@ -59,7 +59,7 @@ def test_animation_service(port, lamp_id, fps=30, duration=1.0, idle_recording="
                 time.sleep(0.5)  # Very brief play
         
         print("8. Testing idle recording dispatch...")
-        service.dispatch("play", "curious")  # Dispatch idle itself
+        service.dispatch("play", "idle")  # Dispatch idle itself
         time.sleep(2)
         
         print("9. Testing unknown event type...")
@@ -80,7 +80,7 @@ def test_animation_service(port, lamp_id, fps=30, duration=1.0, idle_recording="
         print("Service stopped.")
 
 
-def test_interruption_timing(port, lamp_id, fps=30, duration=0.5, idle_recording="curious"):
+def test_interruption_timing(port, lamp_id, fps=30, duration=0.5, idle_recording="idle"):
     """Test rapid interruption to verify smooth transitions"""
     print("\n=== Testing Interruption Timing ===")
     
@@ -113,7 +113,7 @@ def test_interruption_timing(port, lamp_id, fps=30, duration=0.5, idle_recording
         service.stop()
 
 
-def test_error_handling(port, lamp_id, fps=30, duration=1.0, idle_recording="curious"):
+def test_error_handling(port, lamp_id, fps=30, duration=1.0, idle_recording="idle"):
     """Test error handling with invalid recordings"""
     print("\n=== Testing Error Handling ===")
     
@@ -156,7 +156,7 @@ if __name__ == "__main__":
         parser.add_argument('--port', type=str, required=True, help='Serial port for the lamp')
         parser.add_argument('--fps', type=int, default=30, help='Frames per second (default: 30)')
         parser.add_argument('--duration', type=float, default=1.0, help='Transition duration in seconds (default: 1.0)')
-        parser.add_argument('--idle', type=str, default='curious', help='Idle recording name (default: curious)')
+        parser.add_argument('--idle', type=str, default='idle', help='Idle recording name (default: idle)')
         args = parser.parse_args()
         
         # Run all tests with parsed arguments
