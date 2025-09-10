@@ -16,7 +16,6 @@ from livekit.plugins import (
     noise_cancellation,
     silero,
 )
-from livekit.plugins.turn_detector.multilingual import MultilingualModel
 from typing import Union
 from lelamp.service.motors.animation_service import AnimationService
 from lelamp.service.rgb.rgb_service import RGBService
@@ -249,8 +248,7 @@ async def entrypoint(ctx: agents.JobContext):
             voice="ballad",
             instructions="Speak in a friendly and conversational tone.",
         ),
-        vad=silero.VAD.load(),
-        turn_detection=MultilingualModel(),
+        vad=silero.VAD.load()
     )
 
     await session.start(
